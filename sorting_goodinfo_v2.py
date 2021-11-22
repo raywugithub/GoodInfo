@@ -1,9 +1,9 @@
 import pandas as pd
 
-filter = 'Filter_20211119.xlsx'
-input = 'GoodInfo_StockList_20211119.csv'
-reference = 'GoodInfo_StockList_20211118.xlsx'
-output = 'GoodInfo_StockList_20211119.xlsx'
+filter = 'Filter_20211122.xlsx'
+input = 'GoodInfo_StockList_20211122.csv'
+reference = 'GoodInfo_StockList_20211119.xlsx'
+output = 'GoodInfo_StockList_20211122.xlsx'
 
 
 def stock_id_transfer(transfer):
@@ -28,12 +28,3 @@ merged_df = df.merge(filter_df, how='outer', on=['代號', '名稱'],
 merged_df.rename(inplace=True, columns={'_merge': 'merge_status'})
 #merged_df.drop(columns={'_merge'}, inplace=True)
 merged_df.to_excel(output)
-
-
-#df = pd.read_excel('temp_GoodInfo_StockList_20211118.xlsx')
-#filter_df = pd.read_excel('Filter_20211118.xlsx')
-# merged_df = df.merge(filter_df, how='outer',
-#                     indicator=True, on=['名稱']).loc[lambda x: x['_merge'] == 'left_only']
-#merged_df.drop(columns={'_merge'}, inplace=True)
-# merged_df.to_excel('temp_GoodInfo_StockList_20211118.xlsx')
-#
