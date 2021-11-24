@@ -1,11 +1,11 @@
 import pandas as pd
 
 filter = 'Filter_20211123.xlsx'
-input = 'GoodInfo_StockList_20211123.csv'
+input = 'GoodInfo_StockList_20211124.csv'
 reference = 'GoodInfo_StockList_20211122.xlsx'
-output = 'GoodInfo_StockList_20211123.xlsx'
-drop = 'GoodInfo_StockList_20211123_drop.xlsx'
-open_position = r'..\TradingModel\TEMP_TradingModel_TotalOpenPosition.xlsx'
+output = 'GoodInfo_StockList_20211124.xlsx'
+drop = 'GoodInfo_StockList_20211124_drop.xlsx'
+open_position = r'..\TradingModel_v2\TEMP_TradingModel_TotalOpenPosition.xlsx'
 
 
 def stock_id_transfer(transfer):
