@@ -1,10 +1,10 @@
 import pandas as pd
 
-filter = 'Filter_20211123.xlsx'
-input = 'GoodInfo_StockList_20211124.csv'
-reference = 'GoodInfo_StockList_20211122.xlsx'
-output = 'GoodInfo_StockList_20211124.xlsx'
-drop = 'GoodInfo_StockList_20211124_drop.xlsx'
+filter = 'Filter_20211124.xlsx'
+input = 'GoodInfo_StockList_20211125.csv'
+reference = 'GoodInfo_StockList_20211124.xlsx'
+output = 'GoodInfo_StockList_20211125.xlsx'
+drop = 'GoodInfo_StockList_20211125_drop.xlsx'
 open_position = r'..\TradingModel_v2\TEMP_TradingModel_TotalOpenPosition.xlsx'
 
 
