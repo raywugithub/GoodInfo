@@ -1,6 +1,7 @@
 import pandas as pd
 
-filter = 'Filter_20211124.xlsx'
+
+filter = 'Filter_20211130.xlsx'
 input = 'GoodInfo_StockList_20211130.csv'
 reference = 'GoodInfo_StockList_20211129.xlsx'
 output = 'GoodInfo_StockList_20211130.xlsx'
