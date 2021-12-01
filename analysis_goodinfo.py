@@ -6,6 +6,8 @@ date_string = '2021'+'1201'
 
 today = date.today()
 yesterday = today - datetime.timedelta(days=1)
+#today = '2021-12-01'
+#yesterday = '2021-11-30'
 
 openposition = 'TodayOpenPosition_' + date_string + '.xlsx'
 reference = 'GoodInfo_StockList_' + date_string + '.xlsx'
@@ -51,3 +53,17 @@ yesterday_analysis_df = yesterday_analysis_df[yesterday_analysis_df['Type'] == '
 two_days_lost_df = temp_analysis_df.merge(
     yesterday_analysis_df, how='outer', indicator=True, on='股票名稱').loc[lambda x: x['_merge'] == 'both']
 two_days_lost_df.to_excel('持股分析_' + str(today) + '_LOST.xlsx')
+
+open_position_profit_df = pd.read_excel('未實現分析.xlsx')
+open_position_profit = float(
+    analysis_df['\t未實現損益'].sum()) / float(analysis_df['\t持有成本'].sum())
+open_position_profit = round(open_position_profit*100, 2)
+try:
+    if open_position_profit_df['日期'].to_list()[-1].date() != today:
+        open_position_profit_df = open_position_profit_df.append(
+            {'日期': today, '未實現報酬率': open_position_profit}, ignore_index=True)
+        open_position_profit_df.to_excel('未實現分析.xlsx', index=False)
+except:
+    open_position_profit_df = open_position_profit_df.append(
+        {'日期': today, '未實現報酬率': open_position_profit}, ignore_index=True)
+    open_position_profit_df.to_excel('未實現分析.xlsx', index=False)
