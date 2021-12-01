@@ -1,10 +1,11 @@
 import pandas as pd
 
+date_string = '2021'+'1201'
 
 filter = 'Filter_20211130.xlsx'
-input = 'GoodInfo_StockList_20211130.csv'
-reference = 'GoodInfo_StockList_20211129.xlsx'
-output = 'GoodInfo_StockList_20211130.xlsx'
+input = 'GoodInfo_StockList_' + date_string + '.csv'
+reference = 'GoodInfo_StockList_20211130.xlsx'
+output = 'GoodInfo_StockList_' + date_string + '.xlsx'
 
 
 def stock_id_transfer(transfer):
