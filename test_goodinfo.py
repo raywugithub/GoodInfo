@@ -1,20 +1,71 @@
-import requests
-from bs4 import BeautifulSoup
-
-headers = {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0 Win64 x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"}
+import pandas as pd
 
 
-url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID={}'.format(
-    3141)
-print('url:', url)
-response = requests.get(url, headers=headers)
-print('response:', response)
-response.encoding = 'utf8'
-soup = BeautifulSoup(response.text, 'lxml')
-print('soup:', soup)
-table = soup.find('table', class_='b1 p4_2 r10')
-print('table:', table)
-tr = table.find('tr', class_='bg_h1 fw_normal')
-print('tr:', tr)
-td = tr.find('td')
+def change_name(temp):
+    return (temp['名稱'] + '(' + str(temp['代號']) + ')')
+
+
+def stock_id_transfer(transfer):
+    result = str(transfer['代號']).replace('=', '')
+    return result.replace('"', '')
+
+
+def three_days_score_calculate(temp):
+    score = 0
+    if temp['3日累計漲跌(%)'] > 0:
+        score = score + 2
+    elif temp['3日累計漲跌(%)'] < 0:
+        score = score - 2
+    else:
+        score = score
+    if temp['三大法人3日累計買賣超佔成交(%)'] > 0:
+        score = score + 2
+    elif temp['三大法人3日累計買賣超佔成交(%)'] < 0:
+        score = score - 2
+    else:
+        score = score
+    if temp['券資比3日增減'] > 0:
+        score = score + 1
+    elif temp['券資比3日增減'] < 0:
+        score = score - 1
+    else:
+        score = score
+    return score
+
+
+def five_days_score_calculate(temp):
+    score = 0
+    if temp['5日累計漲跌(%)'] > 0:
+        score = score + 2
+    elif temp['5日累計漲跌(%)'] < 0:
+        score = score - 2
+    else:
+        score = score
+    if temp['三大法人5日累計買賣超佔成交(%)'] > 0:
+        score = score + 2
+    elif temp['三大法人5日累計買賣超佔成交(%)'] < 0:
+        score = score - 2
+    else:
+        score = score
+    if temp['券資比5日增減'] > 0:
+        score = score + 1
+    elif temp['券資比5日增減'] < 0:
+        score = score - 1
+    else:
+        score = score
+    return score
+
+
+lost_df = pd.read_csv('lost.csv')
+lost_df['代號'] = lost_df.apply(stock_id_transfer, axis=1)
+lost_df['股票名稱'] = lost_df.apply(change_name, axis=1)
+
+open_lost_df = pd.read_excel('持股分析_2021-12-02.xlsx')
+open_lost_df = open_lost_df[open_lost_df['Type'] == 'LOST']
+
+merge_df = open_lost_df.merge(
+    lost_df, how='outer', on='股票名稱', indicator=True).loc[lambda x: x['_merge'] == 'both']
+merge_df['3日分數'] = merge_df.apply(three_days_score_calculate, axis=1)
+merge_df['5日分數'] = merge_df.apply(five_days_score_calculate, axis=1)
+
+merge_df.to_excel('lost.xlsx')
