@@ -1,10 +1,10 @@
 import pandas as pd
 
-date_string = '2021'+'1202'
+date_string = '2021'+'1203'
 
 filter = 'Filter_20211202.xlsx'
 input = 'GoodInfo_StockList_' + date_string + '.csv'
-reference = 'GoodInfo_StockList_20211201.xlsx'
+reference = 'GoodInfo_StockList_20211202.xlsx'
 output = 'GoodInfo_StockList_' + date_string + '.xlsx'
 
 
@@ -70,11 +70,12 @@ merged_df = df.merge(filter_df, how='outer',
 merged_df = merged_df[['代號', '名稱', 'Class', '一年最高股價', '3日累計漲跌(%)', '5日累計漲跌(%)',
                        '三大法人3日累計買賣超佔成交(%)', '三大法人5日累計買賣超佔成交(%)', '券資比3日增減', '券資比5日增減']]
 merged_df.to_excel(output)
-
 df = pd.read_excel(output)
 filter_df = pd.read_excel(reference)
 filter_df['代號'] = filter_df['代號'].astype('object')
 filter_df.drop(columns={'merge_status'}, inplace=True)
+# filter_df.drop(columns={'一年最高股價'}, inplace=True)  # test
+filter_df = filter_df[['名稱', 'Class', '3日分數', '5日分數']]
 merged_df = df.merge(filter_df, how='outer', on=['名稱'],
                      indicator=True).loc[lambda x: x['_merge'] != 'right_only']
 merged_df.rename(inplace=True, columns={'_merge': 'merge_status'})
