@@ -2,7 +2,7 @@ import pandas as pd
 
 date_string = '2021'+'1206'
 
-filter = 'Filter_20211203.xlsx'
+filter = 'Filter_20211206.xlsx'
 input = 'GoodInfo_StockList_' + date_string + '.csv'
 reference = 'GoodInfo_StockList_20211203.xlsx'
 output = 'GoodInfo_StockList_' + date_string + '.xlsx'
@@ -59,6 +59,10 @@ def five_days_score_calculate(temp):
     return score
 
 
+def three_five_days_score_calculate(temp):
+    return temp['3日分數'] + temp['5日分數']
+
+
 def is_stair(stair):
     if stair['半年最低股價'] > stair['一年最低股價']:
         if stair['半年最高股價'] == stair['一年最高股價']:
@@ -93,4 +97,6 @@ merged_df.rename(inplace=True, columns={'_merge': 'merge_status'})
 
 merged_df['3日分數'] = merged_df.apply(three_days_score_calculate, axis=1)
 merged_df['5日分數'] = merged_df.apply(five_days_score_calculate, axis=1)
+merged_df['連續分數'] = merged_df.apply(three_five_days_score_calculate, axis=1)
+merged_df.sort_values(by='連續分數', ascending=False, inplace=True)
 merged_df.to_excel(output)

@@ -6,7 +6,7 @@ date_string = '2021'+'1206'
 
 today = date.today()
 yesterday = today - datetime.timedelta(days=1)
-#today = '2021-12-02'
+today = '2021-12-06'
 yesterday = '2021-12-02'
 
 openposition = 'TodayOpenPosition_' + date_string + '.xlsx'
@@ -35,7 +35,8 @@ open_position_df = pd.read_excel(openposition)
 
 reference_df = pd.read_excel(reference)
 reference_df['Name'] = reference_df.apply(change_name, axis=1)
-reference_df = reference_df[['Name', 'Class', '一年最高股價', '3日分數', '5日分數']]
+reference_df = reference_df[[
+    'Name', 'Class', '一年最高股價', '3日分數', '5日分數', '連續分數']]
 reference_df.rename(columns={'Name': '股票名稱'}, inplace=True)
 
 analysis_df = open_position_df.merge(
@@ -59,11 +60,11 @@ open_position_profit = float(
     analysis_df['\t未實現損益'].sum()) / float(analysis_df['\t持有成本'].sum())
 open_position_profit = round(open_position_profit*100, 2)
 try:
-    if open_position_profit_df['日期'].to_list()[-1].date() != today:
+    if str(open_position_profit_df['日期'].to_list()[-1]) != str(today):
         open_position_profit_df = open_position_profit_df.append(
-            {'日期': today, '未實現報酬率': open_position_profit}, ignore_index=True)
+            {'日期': str(today), '未實現報酬率': open_position_profit}, ignore_index=True)
         open_position_profit_df.to_excel('未實現分析.xlsx', index=False)
 except:
     open_position_profit_df = open_position_profit_df.append(
-        {'日期': today, '未實現報酬率': open_position_profit}, ignore_index=True)
+        {'日期': str(today), '未實現報酬率': open_position_profit}, ignore_index=True)
     open_position_profit_df.to_excel('未實現分析.xlsx', index=False)
