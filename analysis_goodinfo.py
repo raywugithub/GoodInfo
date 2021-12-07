@@ -2,12 +2,12 @@ import pandas as pd
 from datetime import date
 import datetime
 
-date_string = '2021'+'1206'
+date_string = '2021'+'1207'
 
 today = date.today()
 yesterday = today - datetime.timedelta(days=1)
-today = '2021-12-06'
-yesterday = '2021-12-02'
+#today = '2021-12-06'
+#yesterday = '2021-12-02'
 
 openposition = 'TodayOpenPosition_' + date_string + '.xlsx'
 reference = 'GoodInfo_StockList_' + date_string + '.xlsx'
