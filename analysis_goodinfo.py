@@ -36,7 +36,7 @@ open_position_df = pd.read_excel(openposition)
 reference_df = pd.read_excel(reference)
 reference_df['Name'] = reference_df.apply(change_name, axis=1)
 reference_df = reference_df[[
-    'Name', 'Class', '一年最高股價', '3日分數', '5日分數', '連續分數']]
+    'Name', '代號', 'Class', '一年最高股價', '3日分數', '5日分數', '連續分數']]
 reference_df.rename(columns={'Name': '股票名稱'}, inplace=True)
 
 analysis_df = open_position_df.merge(
