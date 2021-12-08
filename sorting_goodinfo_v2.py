@@ -1,10 +1,10 @@
 import pandas as pd
 
-date_string = '2021'+'1207'
+date_string = '2021'+'1208'
 
 filter = 'Filter_20211206.xlsx'
 input = 'GoodInfo_StockList_' + date_string + '.csv'
-reference = 'GoodInfo_StockList_20211206.xlsx'
+reference = 'GoodInfo_StockList_20211207.xlsx'
 output = 'GoodInfo_StockList_' + date_string + '.xlsx'
 
 
