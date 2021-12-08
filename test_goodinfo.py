@@ -64,8 +64,8 @@ lost_df = pd.read_csv('lost.csv')
 lost_df['代號'] = lost_df.apply(stock_id_transfer, axis=1)
 lost_df['股票名稱'] = lost_df.apply(change_name, axis=1)
 
-open_lost_df = pd.read_excel('持股分析_2021-12-02.xlsx')
-
+open_lost_df = pd.read_excel('持股分析_2021-12-08.xlsx')
+open_lost_df.drop(columns={'5日累計漲跌(%)'}, inplace=True)
 merge_df = open_lost_df.merge(
     lost_df, how='outer', on='股票名稱', indicator=True).loc[lambda x: x['_merge'] == 'both']
 merge_df['3日分數'] = merge_df.apply(three_days_score_calculate, axis=1)

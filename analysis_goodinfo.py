@@ -2,12 +2,12 @@ import pandas as pd
 from datetime import date
 import datetime
 
-date_string = '2021'+'1207'
+date_string = '2021'+'1208'
 
 today = date.today()
 yesterday = today - datetime.timedelta(days=1)
-#today = '2021-12-06'
-#yesterday = '2021-12-02'
+today = '2021-12-08'
+yesterday = '2021-12-07'
 
 openposition = 'TodayOpenPosition_' + date_string + '.xlsx'
 reference = 'GoodInfo_StockList_' + date_string + '.xlsx'
@@ -36,7 +36,7 @@ open_position_df = pd.read_excel(openposition)
 reference_df = pd.read_excel(reference)
 reference_df['Name'] = reference_df.apply(change_name, axis=1)
 reference_df = reference_df[[
-    'Name', '代號', 'Class', '一年最高股價', '3日分數', '5日分數', '連續分數']]
+    'Name', '代號', 'Class', '一年最高股價', '3日分數', '5日分數', '連續分數', '5日累計漲跌(%)']]
 reference_df.rename(columns={'Name': '股票名稱'}, inplace=True)
 
 analysis_df = open_position_df.merge(

@@ -1,6 +1,6 @@
 import pandas as pd
 
-date_string = '2021'+'1208'
+date_string = '2021'+'1208_'
 
 filter = 'Filter_20211206.xlsx'
 input = 'GoodInfo_StockList_' + date_string + '.csv'
@@ -72,8 +72,8 @@ def is_stair(stair):
 
 df = pd.read_csv(input)
 
-df['Stair'] = df.apply(is_stair, axis=1)
-df = df[df['Stair'] == 'TRUE']
+#df['Stair'] = df.apply(is_stair, axis=1)
+#df = df[df['Stair'] == 'TRUE']
 
 df['代號'] = df.apply(stock_id_transfer, axis=1)
 filter_df = pd.read_excel(filter)
