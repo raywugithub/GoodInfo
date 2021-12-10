@@ -74,3 +74,6 @@ stock_list_df['低於近10日低點'] = stock_list_df.apply(
     lambda x: x['成交'] <= x['10日最低股價'], axis=1)
 stock_list_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
+
+print(stock_list_df[stock_list_df['漲跌幅'] > 5])
+print('今日漲5%以上')
