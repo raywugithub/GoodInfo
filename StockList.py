@@ -1,4 +1,8 @@
+from numpy import result_type
 import pandas as pd
+
+today = '2021-12-10'
+yesterday = '2021-12-09'
 
 
 def is_stair(stair):
@@ -9,31 +13,64 @@ def is_stair(stair):
                 return 'TRUE'
 
 
-stock_list_df = pd.read_csv('GoodInfo_StockList_20211209__.csv')
+def copy_type_N_from_yesterday(type_N):
+    if type_N['類型'+'_'+yesterday] == 'N':
+        return 'N'
+
+
+stock_list_df = pd.read_csv('StockList_' + today + '.csv')
 stock_list_df['強勢股'] = stock_list_df.apply(is_stair, axis=1)
 stock_list_df = stock_list_df[stock_list_df['強勢股'] == 'TRUE']
 stock_list_df['類型'] = stock_list_df.apply(lambda x: None, axis=1)
+stock_list_df['名稱'] = stock_list_df['名稱'].astype(str)
 stock_list_df['代號'] = stock_list_df.apply(
     lambda x: str(x['代號']).replace('=', ''), axis=1)
 stock_list_df['代號'] = stock_list_df.apply(
     lambda x: str(x['代號']).replace('"', ''), axis=1)
-stock_list_df['股票名稱'] = stock_list_df.apply(
+stock_list_df['股票名稱_國泰'] = stock_list_df.apply(
     lambda x: x['名稱'] + '(' + str(x['代號']) + ')', axis=1)
+stock_list_df['股票名稱_群益'] = stock_list_df.apply(
+    lambda x: str(x['代號']) + x['名稱'], axis=1)
 # stock_list_df.to_excel('temp.xlsx', index=False)
 
-open_position_df = pd.read_excel('TodayOpenPosition_20211209.xlsx')
+stock_list_yesterday_df = pd.read_excel('StockList_' + yesterday + '.xlsx')
+stock_list_yesterday_df = stock_list_yesterday_df[['名稱', '類型']]
+merge_df = stock_list_df.merge(stock_list_yesterday_df, how='outer', on=[
+                               '名稱'], indicator=True, suffixes=('_' + today, '_' + yesterday))
+merge_df.rename(columns={'_merge': '_merge_with_yesterday'}, inplace=True)
+merge_df['類型'+'_' + today] = merge_df.apply(copy_type_N_from_yesterday, axis=1)
+merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
+stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
+open_position_df = pd.read_excel('TodayOpenPosition_20211210.xlsx')
+open_position_df.rename(
+    columns={'股票名稱': '股票名稱_國泰', '\t庫存股數': '庫存股數_國泰', '\t持有成本': '持有成本_國泰', '\t未實現損益': '未實現損益_國泰'}, inplace=True)
+open_position_df = open_position_df[[
+    '股票名稱_國泰', '庫存股數_國泰', '持有成本_國泰', '未實現損益_國泰']]
 merge_df = stock_list_df.merge(
-    open_position_df, how='outer', on='股票名稱', indicator=True)
-merge_df['本週創新高'] = merge_df.apply(
+    open_position_df, how='outer', on='股票名稱_國泰', indicator=True)
+merge_df.rename(
+    columns={'_merge': '_merge_with_OpenPosition_國泰'}, inplace=True)
+merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
+stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
+
+# 未平倉
+open_position_df = pd.read_excel('TodayOpenPosition_20211210_.xlsx')
+open_position_df.rename(
+    columns={'股票名稱': '股票名稱_群益', '庫存股數': '庫存股數_群益', '付出成本': '付出成本_群益', '損益': '損益_群益'}, inplace=True)
+open_position_df = open_position_df[['股票名稱_群益', '庫存股數_群益', '付出成本_群益', '損益_群益']]
+merge_df = stock_list_df.merge(
+    open_position_df, how='outer', on='股票名稱_群益', indicator=True)
+merge_df.rename(
+    columns={'_merge': '_merge_with_OpenPosition_群益'}, inplace=True)
+merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
+stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
+
+stock_list_df['本週創新高'] = stock_list_df.apply(
     lambda x: x['5日最高股價'] == x['一年最高股價'], axis=1)
-merge_df['低於近5日低點'] = merge_df.apply(
+stock_list_df['低於近5日低點'] = stock_list_df.apply(
     lambda x: x['成交'] <= x['5日最低股價'], axis=1)
-merge_df['低於近10日低點'] = merge_df.apply(
+stock_list_df['低於近10日低點'] = stock_list_df.apply(
     lambda x: x['成交'] <= x['10日最低股價'], axis=1)
-# merge_df.to_excel('temp.xlsx', index=False)
-
-
-out_df = pd.read_excel('temp.xlsx')
-out_df = out_df[out_df['類型'] == 'X']
-print(out_df['股票名稱'])
+stock_list_df.to_excel('StockList_' + today + '.xlsx', index=False)
+stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
