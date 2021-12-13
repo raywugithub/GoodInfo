@@ -34,7 +34,6 @@ stock_list_df['股票名稱_群益'] = stock_list_df.apply(
 # stock_list_df.to_excel('temp.xlsx', index=False)
 
 stock_list_yesterday_df = pd.read_excel('StockList_' + yesterday + '.xlsx')
-print(stock_list_yesterday_df.columns)
 stock_list_yesterday_df = stock_list_yesterday_df[['名稱', '類型'+'_'+yesterday]]
 stock_list_yesterday_df.rename(
     columns={'類型'+'_'+yesterday: '類型'}, inplace=True)
@@ -45,7 +44,8 @@ merge_df['類型'+'_' + today] = merge_df.apply(copy_type_N_from_yesterday, axis
 merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
-open_position_df = pd.read_excel('TodayOpenPosition_20211210.xlsx')
+# 未平倉
+open_position_df = pd.read_excel('TodayOpenPosition_20211213.xlsx')
 open_position_df.rename(
     columns={'股票名稱': '股票名稱_國泰', '\t庫存股數': '庫存股數_國泰', '\t持有成本': '持有成本_國泰', '\t未實現損益': '未實現損益_國泰'}, inplace=True)
 open_position_df = open_position_df[[
@@ -58,7 +58,7 @@ merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
 # 未平倉
-open_position_df = pd.read_excel('TodayOpenPosition_20211210_.xlsx')
+open_position_df = pd.read_excel('TodayOpenPosition_20211213_.xlsx')
 open_position_df.rename(
     columns={'股票名稱': '股票名稱_群益', '庫存股數': '庫存股數_群益', '付出成本': '付出成本_群益', '損益': '損益_群益'}, inplace=True)
 open_position_df = open_position_df[['股票名稱_群益', '庫存股數_群益', '付出成本_群益', '損益_群益']]
@@ -78,5 +78,6 @@ stock_list_df['低於近10日低點'] = stock_list_df.apply(
 stock_list_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
-print(stock_list_df[stock_list_df['漲跌幅'] > 5])
+print_df = stock_list_df[stock_list_df['漲跌幅'] > 5]
+print(print_df[['代號', '名稱', '漲跌幅']])
 print('今日漲5%以上')
