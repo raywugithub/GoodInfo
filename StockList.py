@@ -1,8 +1,8 @@
 from numpy import result_type
 import pandas as pd
 
-today = '2021-12-10'
-yesterday = '2021-12-09'
+today = '2021-12-13'
+yesterday = '2021-12-10'
 
 
 def is_stair(stair):
@@ -34,7 +34,10 @@ stock_list_df['股票名稱_群益'] = stock_list_df.apply(
 # stock_list_df.to_excel('temp.xlsx', index=False)
 
 stock_list_yesterday_df = pd.read_excel('StockList_' + yesterday + '.xlsx')
-stock_list_yesterday_df = stock_list_yesterday_df[['名稱', '類型']]
+print(stock_list_yesterday_df.columns)
+stock_list_yesterday_df = stock_list_yesterday_df[['名稱', '類型'+'_'+yesterday]]
+stock_list_yesterday_df.rename(
+    columns={'類型'+'_'+yesterday: '類型'}, inplace=True)
 merge_df = stock_list_df.merge(stock_list_yesterday_df, how='outer', on=[
                                '名稱'], indicator=True, suffixes=('_' + today, '_' + yesterday))
 merge_df.rename(columns={'_merge': '_merge_with_yesterday'}, inplace=True)
