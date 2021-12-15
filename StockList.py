@@ -1,8 +1,8 @@
 from numpy import result_type
 import pandas as pd
 
-today = '2021-12-14'
-yesterday = '2021-12-13'
+today = '2021-12-16'
+yesterday = '2021-12-14'
 
 
 def is_stair(stair):
@@ -45,7 +45,7 @@ merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
 # 未平倉
-open_position_df = pd.read_excel('TodayOpenPosition_20211214.xlsx')
+open_position_df = pd.read_excel('TodayOpenPosition_' + today + '.xlsx')
 open_position_df.rename(
     columns={'股票名稱': '股票名稱_國泰', '\t庫存股數': '庫存股數_國泰', '\t持有成本': '持有成本_國泰', '\t未實現損益': '未實現損益_國泰'}, inplace=True)
 open_position_df = open_position_df[[
@@ -58,7 +58,7 @@ merge_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
 # 未平倉
-open_position_df = pd.read_excel('TodayOpenPosition_20211214_.xlsx')
+open_position_df = pd.read_excel('TodayOpenPosition_' + today + '_.xlsx')
 open_position_df.rename(
     columns={'股票名稱': '股票名稱_群益', '庫存股數': '庫存股數_群益', '付出成本': '付出成本_群益', '損益': '損益_群益'}, inplace=True)
 open_position_df = open_position_df[['股票名稱_群益', '庫存股數_群益', '付出成本_群益', '損益_群益']]
@@ -80,4 +80,14 @@ stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
 print_df = stock_list_df[stock_list_df['漲跌幅'] > 5]
 print(print_df[['代號', '名稱', '漲跌幅']])
-print('今日漲5%以上')
+print('今日漲5%以上\n')
+
+open_position_cost = float(
+    stock_list_df['持有成本_國泰'].sum()) + float(stock_list_df['付出成本_群益'].sum())
+print('今日未平倉成本：  $', open_position_cost)
+open_position_profit = float(
+    stock_list_df['未實現損益_國泰'].sum()) + float(stock_list_df['損益_群益'].sum())
+open_position_profit_percent = round(
+    open_position_profit * 100 / open_position_cost, 2)
+print('今日未平倉績效：  $', open_position_profit,
+      ' ... ', open_position_profit_percent, '%')
