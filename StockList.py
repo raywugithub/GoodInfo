@@ -2,7 +2,7 @@ from numpy import result_type
 import pandas as pd
 
 today = '2021-12-16'
-yesterday = '2021-12-14'
+yesterday = '2021-12-15'
 
 
 def is_stair(stair):
