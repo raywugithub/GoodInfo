@@ -3,8 +3,8 @@ import pandas as pd
 
 account_cty = 0
 
-today = '2021-12-21'
-yesterday = '2021-12-16'
+today = '2021-12-24'
+yesterday = '2021-12-22'
 
 
 def is_stair(stair):
@@ -108,3 +108,8 @@ try:
           ' ... ', open_position_profit_percent, '%')
 except:
     print('今日未平倉績效：  N/A')
+
+profit_df = pd.read_excel('profit.xlsx')
+profit_df = profit_df.append(
+    {'日期': today, '未平倉績效': str(open_position_profit_percent) + '%'}, ignore_index=True)
+profit_df.to_excel('profit.xlsx', index=False)
