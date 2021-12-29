@@ -3,8 +3,8 @@ import pandas as pd
 
 account_cty = 0
 
-today = '2021-12-27'
-yesterday = '2021-12-24'
+today = '2021-12-28'
+yesterday = '2021-12-27'
 
 
 def is_stair(stair):
