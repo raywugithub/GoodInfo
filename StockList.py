@@ -3,7 +3,7 @@ import pandas as pd
 
 account_cty = 0
 
-today = '2022-01-17'
+today = '2022-01-18'
 yesterday = '2022-01-13'
 
 
@@ -87,6 +87,7 @@ stock_list_df.to_excel('StockList_' + today + '.xlsx', index=False)
 stock_list_df = pd.read_excel('StockList_' + today + '.xlsx')
 
 print_df = stock_list_df[stock_list_df['漲跌幅'] > 5]
+print_df.to_excel('tomorrow.xlsx')
 print(print_df[['代號', '名稱', '漲跌幅']])
 print('今日漲5%以上\n')
 
