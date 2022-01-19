@@ -3,7 +3,7 @@ import pandas as pd
 
 account_cty = 0
 
-today = '2022-01-18'
+today = '2022-01-19'
 yesterday = '2022-01-13'
 
 
