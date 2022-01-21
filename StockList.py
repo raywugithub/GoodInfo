@@ -3,8 +3,8 @@ import pandas as pd
 
 account_cty = 0
 
-today = '2022-01-20'
-yesterday = '2022-01-13'
+today = '2022-01-21'
+yesterday = '2022-01-20'
 
 
 def is_stair(stair):
@@ -121,8 +121,12 @@ except:
     print('今日已平倉績效：  N/A')
 profit_df = pd.read_excel('profit.xlsx')
 if str(profit_df['日期'].to_list()[-1]) != str(today):
-    profit_df = profit_df.append(
-        {'日期': today, '未平倉績效': str(open_position_profit_percent) + '%', '未平倉成本': str(open_position_cost), '未實現損益': str(open_position_profit), '已實現損益': str(close_position_profit)}, ignore_index=True)
+    try:
+        profit_df = profit_df.append(
+            {'日期': today, '未平倉績效': str(open_position_profit_percent) + '%', '未平倉成本': str(open_position_cost), '未實現損益': str(open_position_profit), '已實現損益': str(close_position_profit)}, ignore_index=True)
+    except:
+        profit_df = profit_df.append(
+            {'日期': today, '已實現損益': str(close_position_profit)}, ignore_index=True)
     profit_df.to_excel('profit.xlsx', index=False)
 else:
     print('profit.xlsx ... no need to update')
